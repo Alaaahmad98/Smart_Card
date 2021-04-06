@@ -76,7 +76,7 @@ public class AddCardActivity extends AppCompatActivity implements View.OnClickLi
         bnUpload.setOnClickListener(this);
         bnNext.setOnClickListener(this);
     }
-
+//
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
