@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "908705823735",
+    "project_id": "smart-card-e5834",
+    "storage_bucket": "smart-card-e5834.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:908705823735:android:d9ccdb629a93d36aa48cf2",
+        "android_client_info": {
+          "package_name": "com.example.smartcard"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "908705823735-u7rqcfpifa1auaaja2fjfdq5j3u8nkp2.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCEgo6hJ2HMzx7Kt_3jSE9wi2ydoQD9Vq8"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "908705823735-u7rqcfpifa1auaaja2fjfdq5j3u8nkp2.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

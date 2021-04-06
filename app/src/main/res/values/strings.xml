@@ -1,0 +1,10 @@
+<resources>
+    <string name="app_name">Smart Card</string>
+
+    <string name="empty">This field is required </string>
+    <string name="symbols_or_number">This field does not accept symbols and number</string>
+    <string name="min_name">This Field should not less than 2 characters </string>
+    <string name="valid_email">Please enter valid email address </string>
+    <string name="valid_password">Password should include uppercase , lowercase characters and numbers Password should be at least 8 characters.</string>
+    <string name="confirm_password">The password does not match </string>
+</resources>
