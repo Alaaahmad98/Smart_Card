@@ -37,7 +37,7 @@ import com.squareup.picasso.Picasso;
 public class AddCardActivity extends AppCompatActivity implements View.OnClickListener {
 
     private static final int PICK_IMAGE_REQUEST = 1;
-    private Button bnChooseFile, bnUpload, bnNext;
+    private Button bnChooseFile, bnUpload;
     private EditText edName;
     private ImageView imageViewCard;
     private ProgressBar progressBar;
@@ -62,7 +62,6 @@ public class AddCardActivity extends AppCompatActivity implements View.OnClickLi
     private void initiateView() {
         bnChooseFile = findViewById(R.id.bn_choose_file);
         bnUpload = findViewById(R.id.bn_upload);
-        bnNext = findViewById(R.id.bn_next);
         edName = findViewById(R.id.ed_name_card);
         imageViewCard = findViewById(R.id.imageView_card);
         progressBar = findViewById(R.id.progress_bar);
@@ -74,9 +73,9 @@ public class AddCardActivity extends AppCompatActivity implements View.OnClickLi
     private void clickView() {
         bnChooseFile.setOnClickListener(this);
         bnUpload.setOnClickListener(this);
-        bnNext.setOnClickListener(this);
     }
-//
+
+    //
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
@@ -85,9 +84,6 @@ public class AddCardActivity extends AppCompatActivity implements View.OnClickLi
                 break;
             case R.id.bn_upload:
                 uploadFile();
-                break;
-            case R.id.bn_next:
-                startActivity(new Intent(this, AddCategoryActivity.class));
                 break;
         }
     }
@@ -130,20 +126,17 @@ public class AddCardActivity extends AppCompatActivity implements View.OnClickLi
                         }
                     }, 500);
                     Toast.makeText(AddCardActivity.this, "Upload successful", Toast.LENGTH_SHORT).show();
-                    bnNext.setVisibility(View.VISIBLE);
+
                     fileReference.getDownloadUrl().addOnCompleteListener(new OnCompleteListener<Uri>() {
                         @Override
                         public void onComplete(@NonNull Task<Uri> task) {
                             uri = task.getResult();
-                            AddCardHelper addCardHelper = new AddCardHelper(edName.getText().toString().trim(), uri.toString());
+                            AddCardHelper addCardHelper = new AddCardHelper(uri.toString());
 
-                            String uploadId = reference.push().getKey();
-                            SharedPreferences sharedPreferences = getSharedPreferences("KEYS", MODE_PRIVATE);
-                            SharedPreferences.Editor editor = sharedPreferences.edit();
-                            editor.putString("key", uploadId);
-                            editor.putString("card_name", edName.getText().toString().trim());
-                            editor.commit();
-                            reference.child(uploadId).child("nameCard").setValue(addCardHelper);
+                            reference.child(edName.getText().toString()).setValue(addCardHelper);
+
+                            startActivity(new Intent(AddCardActivity.this, AdminHomeActivity.class));
+                            finish();
 
                         }
                     });
@@ -169,8 +162,14 @@ public class AddCardActivity extends AppCompatActivity implements View.OnClickLi
 
     @Override
     public boolean onSupportNavigateUp() {
-        onBackPressed();
+        startActivity(new Intent(AddCardActivity.this, AdminHomeActivity.class));
+        finish();
         return true;
     }
 
+    @Override
+    public void onBackPressed() {
+        startActivity(new Intent(AddCardActivity.this, AdminHomeActivity.class));
+        finish();
+    }
 }

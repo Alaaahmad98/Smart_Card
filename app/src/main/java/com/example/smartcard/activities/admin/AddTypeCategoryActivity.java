@@ -148,7 +148,7 @@ public class AddTypeCategoryActivity extends AppCompatActivity implements View.O
                         @Override
                         public void onComplete(@NonNull Task<Uri> task) {
                             uri = task.getResult();
-                            AddCardHelper addCardHelper = new AddCardHelper(edName.getText().toString().trim(), uri.toString());
+                            AddCardHelper addCardHelper = new AddCardHelper( uri.toString());
 
                             referenceCard.child(key).child("nameType").setValue(addCardHelper);
 

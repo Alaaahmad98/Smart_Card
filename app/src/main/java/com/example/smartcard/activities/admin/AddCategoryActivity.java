@@ -19,6 +19,7 @@ import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import com.example.smartcard.R;
+import com.example.smartcard.activities.CategoryActivity;
 import com.example.smartcard.helper.AddCardHelper;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
@@ -35,7 +36,7 @@ import com.squareup.picasso.Picasso;
 public class AddCategoryActivity extends AppCompatActivity implements View.OnClickListener {
 
     private static final int PICK_IMAGE_REQUEST = 1;
-    private Button bnChooseFile, bnUpload, bnNext;
+    private Button bnChooseFile, bnUpload;
     private EditText edName;
     private ImageView imageViewCategory;
     private ProgressBar progressBar;
@@ -44,12 +45,11 @@ public class AddCategoryActivity extends AppCompatActivity implements View.OnCli
 
     private StorageReference storageReference;
     private DatabaseReference reference;
-    private DatabaseReference referenceCard;
+
     private Uri uri;
 
-    private SharedPreferences preferences;
-    private String key;
-
+    private Intent intent;
+    private String nameParent;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -61,8 +61,7 @@ public class AddCategoryActivity extends AppCompatActivity implements View.OnCli
         clickView();
 
         storageReference = FirebaseStorage.getInstance().getReference("Category");
-        reference = FirebaseDatabase.getInstance().getReference("Category");
-        referenceCard = FirebaseDatabase.getInstance().getReference("Card");
+        reference = FirebaseDatabase.getInstance().getReference("Card");
 
 
     }
@@ -71,20 +70,18 @@ public class AddCategoryActivity extends AppCompatActivity implements View.OnCli
     private void initiateView() {
         bnChooseFile = findViewById(R.id.bn_choose_file);
         bnUpload = findViewById(R.id.bn_upload);
-        bnNext = findViewById(R.id.bn_next);
         edName = findViewById(R.id.ed_name_category);
         imageViewCategory = findViewById(R.id.imageView_category);
         progressBar = findViewById(R.id.progress_bar);
 
-        preferences = getSharedPreferences("KEYS", MODE_PRIVATE);
-        key = preferences.getString("key", null);
-
+        intent = getIntent();
+        nameParent = intent.getStringExtra("NAME_CARD");
     }
 
     private void clickView() {
         bnChooseFile.setOnClickListener(this);
         bnUpload.setOnClickListener(this);
-        bnNext.setOnClickListener(this);
+
     }
 
 
@@ -97,13 +94,7 @@ public class AddCategoryActivity extends AppCompatActivity implements View.OnCli
             case R.id.bn_upload:
                 uploadFile();
                 break;
-            case R.id.bn_next:
-                SharedPreferences sharedPreferences = getSharedPreferences("KEYS", MODE_PRIVATE);
-                SharedPreferences.Editor editor = sharedPreferences.edit();
-                editor.putString("card_category", edName.getText().toString().trim());
-                editor.commit();
-                startActivity(new Intent(this, AddTypeCategoryActivity.class));
-                break;
+
         }
     }
 
@@ -146,14 +137,21 @@ public class AddCategoryActivity extends AppCompatActivity implements View.OnCli
                         }
                     }, 500);
                     Toast.makeText(AddCategoryActivity.this, "Upload successful", Toast.LENGTH_SHORT).show();
-                    bnNext.setVisibility(View.VISIBLE);
+
                     fileReference.getDownloadUrl().addOnCompleteListener(new OnCompleteListener<Uri>() {
                         @Override
                         public void onComplete(@NonNull Task<Uri> task) {
                             uri = task.getResult();
-                            AddCardHelper addCardHelper = new AddCardHelper(edName.getText().toString().trim(), uri.toString());
+                            AddCardHelper addCardHelper = new AddCardHelper(uri.toString());
 
-                            referenceCard.child(key).child("nameCategory").setValue(addCardHelper);
+                            reference.child(nameParent).child(edName.getText().toString()).setValue(addCardHelper);
+
+
+                            Intent intent = new Intent(AddCategoryActivity.this, CategoryActivity.class);
+                            intent.putExtra("NAME_CARD", nameParent);
+                            startActivity(intent);
+                            finish();
+
 
                         }
                     });
@@ -179,8 +177,18 @@ public class AddCategoryActivity extends AppCompatActivity implements View.OnCli
 
     @Override
     public boolean onSupportNavigateUp() {
-        onBackPressed();
+        Intent intent = new Intent(AddCategoryActivity.this, CategoryActivity.class);
+        intent.putExtra("NAME_CARD", nameParent);
+        startActivity(intent);
+        finish();
         return true;
     }
 
+    @Override
+    public void onBackPressed() {
+        Intent intent = new Intent(AddCategoryActivity.this, CategoryActivity.class);
+        intent.putExtra("NAME_CARD", nameParent);
+        startActivity(intent);
+        finish();
+    }
 }

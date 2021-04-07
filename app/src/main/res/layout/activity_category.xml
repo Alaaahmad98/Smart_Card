@@ -9,7 +9,7 @@
     tools:context=".activities.admin.AdminHomeActivity">
 
     <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/recycler_all_card"
+        android:id="@+id/recycler_all_category"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -22,7 +22,7 @@
         android:id="@+id/tv_not_found"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="No Card Added"
+        android:text="No Category Added"
         android:textColor="@color/colorBlack"
         android:textSize="29sp"
         android:textStyle="bold"

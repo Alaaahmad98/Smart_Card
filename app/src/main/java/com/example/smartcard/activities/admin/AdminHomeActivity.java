@@ -1,19 +1,29 @@
 package com.example.smartcard.activities.admin;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.View;
+import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.smartcard.R;
 import com.example.smartcard.activities.LoginActivity;
 import com.example.smartcard.adapter.AdminHomeAdapter;
 
 import com.example.smartcard.helper.AdminHomeHelper;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -25,6 +35,11 @@ public class AdminHomeActivity extends AppCompatActivity {
     private AdminHomeAdapter adapter;
     private List<AdminHomeHelper> list;
 
+    private FloatingActionButton floatingActionButton;
+    private TextView tvNotFound;
+
+    private DatabaseReference reference;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -33,39 +48,60 @@ public class AdminHomeActivity extends AppCompatActivity {
 
         initiateView();
         fullRecyclerView();
-        implementInterFace();
 
     }
 
 
     private void initiateView() {
-        recyclerView = findViewById(R.id.recycler_add_card);
+        recyclerView = findViewById(R.id.recycler_all_card);
         recyclerView.setHasFixedSize(true);
-        recyclerView.setLayoutManager(new LinearLayoutManager(this));
+
+        recyclerView.setLayoutManager(new GridLayoutManager(this, 2));
         list = new ArrayList<>();
+
+        floatingActionButton = findViewById(R.id.fab);
+        tvNotFound = findViewById(R.id.tv_not_found);
+
+        floatingActionButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(AdminHomeActivity.this, AddCardActivity.class));
+            }
+        });
+
+        reference = FirebaseDatabase.getInstance().getReference("Card");
     }
 
     private void fullRecyclerView() {
 
-        list.add(new AdminHomeHelper("Add Card", R.drawable.ic_add));
-
-        adapter = new AdminHomeAdapter(this, list);
-        recyclerView.setAdapter(adapter);
-    }
-
-    private void implementInterFace() {
-        adapter.setOnItemClickListener(new AdminHomeAdapter.OnItemClickListener() {
+        reference.addValueEventListener(new ValueEventListener() {
             @Override
-            public void onItemClick(int position) {
-                String name = list.get(position).getName();
-                switch (name) {
-                    case "Add Card":
-                        startActivity(new Intent(AdminHomeActivity.this, AddCardActivity.class));
-                        break;
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                for (DataSnapshot postSnapShot : snapshot.getChildren()) {
+                    String name = postSnapShot.getKey();
+                    String imageView = postSnapShot.child("picCard").getValue().toString();
+
+                    list.add(new AdminHomeHelper(name, imageView));
+                }
+                adapter = new AdminHomeAdapter(AdminHomeActivity.this, list);
+                recyclerView.setAdapter(adapter);
+
+                if (list.isEmpty()) {
+                    tvNotFound.setVisibility(View.VISIBLE);
+                } else {
+                    tvNotFound.setVisibility(View.GONE);
                 }
             }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+                Toast.makeText(AdminHomeActivity.this, error.getMessage(), Toast.LENGTH_SHORT).show();
+            }
         });
+
+
     }
+
 
     @Override
     public void onBackPressed() {

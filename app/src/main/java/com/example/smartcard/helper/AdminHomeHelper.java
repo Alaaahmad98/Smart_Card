@@ -3,9 +3,9 @@ package com.example.smartcard.helper;
 public class AdminHomeHelper {
 
     private String name;
-    private int imageView;
+    private String imageView;
 
-    public AdminHomeHelper(String name, int imageView) {
+    public AdminHomeHelper(String name, String imageView) {
         this.name = name;
         this.imageView = imageView;
     }
@@ -18,11 +18,11 @@ public class AdminHomeHelper {
         this.name = name;
     }
 
-    public int getImageView() {
+    public String getImageView() {
         return imageView;
     }
 
-    public void setImageView(int imageView) {
+    public void setImageView(String imageView) {
         this.imageView = imageView;
     }
 }

@@ -1,6 +1,7 @@
 package com.example.smartcard.adapter;
 
 import android.content.Context;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,7 +13,11 @@ import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.smartcard.R;
+import com.example.smartcard.activities.CategoryActivity;
+import com.example.smartcard.activities.admin.AddCategoryActivity;
+import com.example.smartcard.activities.admin.AdminHomeActivity;
 import com.example.smartcard.helper.AdminHomeHelper;
+import com.squareup.picasso.Picasso;
 
 import java.util.List;
 
@@ -49,7 +54,23 @@ public class AdminHomeAdapter extends RecyclerView.Adapter<AdminHomeAdapter.View
         final AdminHomeHelper helper = list.get(position);
 
         holder.tvName.setText(helper.getName());
-        holder.imageView.setImageResource(helper.getImageView());
+        Picasso.with(context).load(helper.getImageView()).placeholder(R.mipmap.ic_launcher).fit().centerCrop().into(holder.imageView);
+
+        holder.cardView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String name = helper.getName();
+                Intent intent = null;
+                if(context instanceof AdminHomeActivity){
+                    intent = new Intent(context, CategoryActivity.class);
+                    intent.putExtra("NAME_CARD", name);
+                    context.startActivity(intent);
+                }else if(context instanceof CategoryActivity){
+                    
+                }
+            }
+        });
+
 
     }
 
