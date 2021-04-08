@@ -47,7 +47,7 @@ public class AdminHomeActivity extends AppCompatActivity {
         getSupportActionBar().setTitle("Home");
 
         initiateView();
-        fullRecyclerView();
+
 
     }
 
@@ -127,5 +127,12 @@ public class AdminHomeActivity extends AppCompatActivity {
                     }
                 })
                 .show();
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        list.clear();
+        fullRecyclerView();
     }
 }

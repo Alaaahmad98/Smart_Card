@@ -162,14 +162,13 @@ public class AddCardActivity extends AppCompatActivity implements View.OnClickLi
 
     @Override
     public boolean onSupportNavigateUp() {
-        startActivity(new Intent(AddCardActivity.this, AdminHomeActivity.class));
-        finish();
+        onBackPressed();
         return true;
     }
 
     @Override
     public void onBackPressed() {
-        startActivity(new Intent(AddCardActivity.this, AdminHomeActivity.class));
-        finish();
+        super.onBackPressed();
+
     }
 }

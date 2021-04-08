@@ -1,6 +1,6 @@
 package com.example.smartcard.activities;
 
-import androidx.annotation.NonNull;
+
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -9,12 +9,12 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.TextView;
-import android.widget.Toast;
+
 
 import com.example.smartcard.R;
-import com.example.smartcard.activities.admin.AddCardActivity;
+
 import com.example.smartcard.activities.admin.AddCategoryActivity;
-import com.example.smartcard.activities.admin.AdminHomeActivity;
+
 import com.example.smartcard.adapter.AdminHomeAdapter;
 import com.example.smartcard.helper.AdminHomeHelper;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
@@ -102,12 +102,10 @@ public class CategoryActivity extends AppCompatActivity {
                         } else {
                             tvNotFound.setVisibility(View.GONE);
                         }
-
                     }
 
                     @Override
                     public void onCancelled(DatabaseError databaseError) {
-
                     }
                 }
         );
@@ -116,14 +114,12 @@ public class CategoryActivity extends AppCompatActivity {
 
     @Override
     public boolean onSupportNavigateUp() {
-        startActivity(new Intent(CategoryActivity.this, AdminHomeActivity.class));
-        finish();
+        onBackPressed();
         return true;
     }
 
     @Override
     public void onBackPressed() {
-        startActivity(new Intent(CategoryActivity.this, AdminHomeActivity.class));
-        finish();
+        super.onBackPressed();
     }
 }

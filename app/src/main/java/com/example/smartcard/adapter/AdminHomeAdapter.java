@@ -2,6 +2,7 @@ package com.example.smartcard.adapter;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,6 +15,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.smartcard.R;
 import com.example.smartcard.activities.CategoryActivity;
+import com.example.smartcard.activities.TypeActivity;
 import com.example.smartcard.activities.admin.AddCategoryActivity;
 import com.example.smartcard.activities.admin.AdminHomeActivity;
 import com.example.smartcard.helper.AdminHomeHelper;
@@ -61,17 +63,23 @@ public class AdminHomeAdapter extends RecyclerView.Adapter<AdminHomeAdapter.View
             public void onClick(View v) {
                 String name = helper.getName();
                 Intent intent = null;
-                if(context instanceof AdminHomeActivity){
+                if (context instanceof AdminHomeActivity) {
+                    SharedPreferences preferences = context.getSharedPreferences("NAME_ROOT", Context.MODE_PRIVATE);
+                    SharedPreferences.Editor editor = preferences.edit();
+                    editor.putString("ROOT", name);
+                    editor.commit();
+
                     intent = new Intent(context, CategoryActivity.class);
                     intent.putExtra("NAME_CARD", name);
                     context.startActivity(intent);
-                }else if(context instanceof CategoryActivity){
-                    
+
+                } else if (context instanceof CategoryActivity) {
+                    intent = new Intent(context, TypeActivity.class);
+                    intent.putExtra("NAME_CARD", name);
+                    context.startActivity(intent);
                 }
             }
         });
-
-
     }
 
     @Override

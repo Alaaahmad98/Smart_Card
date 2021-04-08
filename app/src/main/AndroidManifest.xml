@@ -11,7 +11,8 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".activities.TypeActivity"></activity>
+        <activity android:name=".activities.TypeActivity"
+            android:parentActivityName=".activities.CategoryActivity"/>
         <activity
             android:name=".activities.CategoryActivity"
             android:parentActivityName=".activities.admin.AdminHomeActivity" />
@@ -20,7 +21,7 @@
             android:parentActivityName=".activities.admin.AddTypeCategoryActivity" />
         <activity
             android:name=".activities.admin.AddTypeCategoryActivity"
-            android:parentActivityName=".activities.admin.AddCategoryActivity" />
+            android:parentActivityName=".activities.TypeActivity" />
         <activity
             android:name=".activities.admin.AddCategoryActivity"
             android:parentActivityName=".activities.CategoryActivity" />

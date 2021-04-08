@@ -177,8 +177,9 @@ public class AddCategoryActivity extends AppCompatActivity implements View.OnCli
 
     @Override
     public boolean onSupportNavigateUp() {
-        Intent intent = new Intent(AddCategoryActivity.this, CategoryActivity.class);
+        Intent intent = new Intent(this, CategoryActivity.class);
         intent.putExtra("NAME_CARD", nameParent);
+        overridePendingTransition(R.anim.left, R.anim.right);
         startActivity(intent);
         finish();
         return true;
@@ -186,9 +187,12 @@ public class AddCategoryActivity extends AppCompatActivity implements View.OnCli
 
     @Override
     public void onBackPressed() {
-        Intent intent = new Intent(AddCategoryActivity.this, CategoryActivity.class);
+        Intent intent = new Intent(this, CategoryActivity.class);
         intent.putExtra("NAME_CARD", nameParent);
+        overridePendingTransition(R.anim.left, R.anim.right);
         startActivity(intent);
         finish();
+
+
     }
 }
