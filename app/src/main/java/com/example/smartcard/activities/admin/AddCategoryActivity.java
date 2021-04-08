@@ -183,6 +183,7 @@ public class AddCategoryActivity extends AppCompatActivity implements View.OnCli
         startActivity(intent);
         finish();
         return true;
+
     }
 
     @Override
