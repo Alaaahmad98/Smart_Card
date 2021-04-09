@@ -39,7 +39,7 @@ public class AddCategoryActivity extends AppCompatActivity implements View.OnCli
     private Button bnChooseFile, bnUpload;
     private EditText edName;
     private ImageView imageViewCategory;
-    private ProgressBar progressBar;
+    private ProgressBar progressBar, progressBarC;
 
     private Uri mImageUri;
 
@@ -73,7 +73,7 @@ public class AddCategoryActivity extends AppCompatActivity implements View.OnCli
         edName = findViewById(R.id.ed_name_category);
         imageViewCategory = findViewById(R.id.imageView_category);
         progressBar = findViewById(R.id.progress_bar);
-
+        progressBarC = findViewById(R.id.progress_bar_c);
         intent = getIntent();
         nameParent = intent.getStringExtra("NAME_CARD");
     }
@@ -123,6 +123,8 @@ public class AddCategoryActivity extends AppCompatActivity implements View.OnCli
 
     private void uploadFile() {
         if (mImageUri != null) {
+            bnUpload.setVisibility(View.INVISIBLE);
+            progressBarC.setVisibility(View.VISIBLE);
             final StorageReference fileReference = storageReference.child(System.currentTimeMillis() +
                     "." + getFileExtension(mImageUri));
 
@@ -136,6 +138,8 @@ public class AddCategoryActivity extends AppCompatActivity implements View.OnCli
                             progressBar.setProgress(0);
                         }
                     }, 500);
+                    bnUpload.setVisibility(View.VISIBLE);
+                    progressBarC.setVisibility(View.INVISIBLE);
                     Toast.makeText(AddCategoryActivity.this, "Upload successful", Toast.LENGTH_SHORT).show();
 
                     fileReference.getDownloadUrl().addOnCompleteListener(new OnCompleteListener<Uri>() {

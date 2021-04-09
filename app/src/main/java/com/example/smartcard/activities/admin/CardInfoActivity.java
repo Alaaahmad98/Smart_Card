@@ -1,5 +1,6 @@
 package com.example.smartcard.activities.admin;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Context;
@@ -14,21 +15,20 @@ import android.widget.Toast;
 
 import com.example.smartcard.R;
 
-import com.example.smartcard.helper.CardInfHelper;
+
 import com.example.smartcard.utils.Validation;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
+
+
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.Query;
-import com.google.firebase.database.ValueEventListener;
+
 
 
 public class CardInfoActivity extends AppCompatActivity implements View.OnClickListener {
 
-    private EditText edNumberCard, edPriceCard;
+    private EditText edNumberCard;
     private Button bnCreate;
-    private DatabaseReference referenceCard, reference;
+    private DatabaseReference reference;
 
 
     private SharedPreferences preferences;
@@ -37,9 +37,6 @@ public class CardInfoActivity extends AppCompatActivity implements View.OnClickL
     private Intent intent;
     private String child;
 
-    private boolean flag = false;
-
-    private String number, price;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -50,7 +47,6 @@ public class CardInfoActivity extends AppCompatActivity implements View.OnClickL
 
         initiateView();
         clickView();
-        checkIsFullInfo();
 
 
     }
@@ -67,13 +63,13 @@ public class CardInfoActivity extends AppCompatActivity implements View.OnClickL
         parent = preferences.getString("PARENT", null);
 
         edNumberCard = findViewById(R.id.ed_number_card);
-        edPriceCard = findViewById(R.id.ed_price);
+
         bnCreate = findViewById(R.id.button_create);
 
         intent = getIntent();
         child = intent.getStringExtra("NAME_CARD");
 
-        referenceCard = FirebaseDatabase.getInstance().getReference("Card");
+
         reference = FirebaseDatabase.getInstance().getReference("Card/" + root + "/" + parent + "/" + child);
     }
 
@@ -82,67 +78,25 @@ public class CardInfoActivity extends AppCompatActivity implements View.OnClickL
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.button_create:
-                if (flag) {
-                    Toast.makeText(this, "The information has been pre-filled", Toast.LENGTH_SHORT).show();
+                if (!validNumberCard()) {
+                    return;
                 } else {
-                    if (!validNumberCard() | !validPriceCard()) {
-                        return;
-                    } else {
-                        addCardInfo();
-                    }
+                    addCardInfo();
                 }
                 break;
         }
     }
 
 
-    private void checkIsFullInfo() {
-        final Query userQuery = reference;
-
-        userQuery.addListenerForSingleValueEvent(
-                new ValueEventListener() {
-                    @Override
-                    public void onDataChange(DataSnapshot dataSnapshot) {
-                        for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
-                            String name = snapshot.getKey();
-                            System.out.println("name " + name);
-
-                            if (dataSnapshot.hasChild("CardInformation")) {
-                                flag = true;
-                                if (name.equals("CardInformation")) {
-                                    number = snapshot.child("number").getValue().toString();
-                                    price = snapshot.child("price").getValue().toString();
-                                }
-                            }
-
-
-                        }
-                        viewComponentPassedInFlag();
-                    }
-
-                    @Override
-                    public void onCancelled(DatabaseError databaseError) {
-
-                    }
-                }
-        );
-    }
-
-    private void viewComponentPassedInFlag() {
-        if (flag) {
-            edNumberCard.setText("Number Card :" + number);
-            edPriceCard.setText("Price Card :" + price + " JD");
-        }
-    }
-
     private void addCardInfo() {
-        CardInfHelper helper = new CardInfHelper(edNumberCard.getText().toString(), edPriceCard.getText().toString().trim());
 
-        referenceCard.child(root).child(parent).child(child).child("CardInformation").setValue(helper);
+
+        reference.child("CardNumber").push().setValue(edNumberCard.getText().toString());
 
         Toast.makeText(CardInfoActivity.this, "Operation Done Successfully", Toast.LENGTH_SHORT).show();
         startActivity(new Intent(CardInfoActivity.this, AdminHomeActivity.class));
         finish();
+
     }
 
 
@@ -150,9 +104,6 @@ public class CardInfoActivity extends AppCompatActivity implements View.OnClickL
         return Validation.validReq(this, edNumberCard);
     }
 
-    public boolean validPriceCard() {
-        return Validation.validReq(this, edPriceCard);
-    }
 
     @Override
     public boolean onSupportNavigateUp() {

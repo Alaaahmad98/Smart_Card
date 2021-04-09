@@ -12,6 +12,9 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity
+            android:name=".activities.CardNumberActivity"
+            android:parentActivityName=".activities.TypeActivity" />
+        <activity
             android:name=".activities.TypeActivity"
             android:parentActivityName=".activities.CategoryActivity" />
         <activity
@@ -19,7 +22,7 @@
             android:parentActivityName=".activities.admin.AdminHomeActivity" />
         <activity
             android:name=".activities.admin.CardInfoActivity"
-            android:parentActivityName=".activities.TypeActivity" />
+            android:parentActivityName=".activities.CardNumberActivity" />
         <activity
             android:name=".activities.admin.AddTypeCategoryActivity"
             android:parentActivityName=".activities.TypeActivity" />

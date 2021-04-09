@@ -7,7 +7,6 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.ContentResolver;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
@@ -40,7 +39,7 @@ public class AddCardActivity extends AppCompatActivity implements View.OnClickLi
     private Button bnChooseFile, bnUpload;
     private EditText edName;
     private ImageView imageViewCard;
-    private ProgressBar progressBar;
+    private ProgressBar progressBar, progressBarC;
 
     private Uri mImageUri;
 
@@ -65,6 +64,7 @@ public class AddCardActivity extends AppCompatActivity implements View.OnClickLi
         edName = findViewById(R.id.ed_name_card);
         imageViewCard = findViewById(R.id.imageView_card);
         progressBar = findViewById(R.id.progress_bar);
+        progressBarC = findViewById(R.id.progress_bar_c);
 
         storageReference = FirebaseStorage.getInstance().getReference("Card");
         reference = FirebaseDatabase.getInstance().getReference("Card");
@@ -112,6 +112,8 @@ public class AddCardActivity extends AppCompatActivity implements View.OnClickLi
 
     private void uploadFile() {
         if (mImageUri != null) {
+            bnUpload.setVisibility(View.INVISIBLE);
+            progressBarC.setVisibility(View.VISIBLE);
             final StorageReference fileReference = storageReference.child(System.currentTimeMillis() +
                     "." + getFileExtension(mImageUri));
 
@@ -125,6 +127,8 @@ public class AddCardActivity extends AppCompatActivity implements View.OnClickLi
                             progressBar.setProgress(0);
                         }
                     }, 500);
+                    bnUpload.setVisibility(View.VISIBLE);
+                    progressBarC.setVisibility(View.INVISIBLE);
                     Toast.makeText(AddCardActivity.this, "Upload successful", Toast.LENGTH_SHORT).show();
 
                     fileReference.getDownloadUrl().addOnCompleteListener(new OnCompleteListener<Uri>() {
@@ -156,6 +160,7 @@ public class AddCardActivity extends AppCompatActivity implements View.OnClickLi
             });
 
         } else {
+
             Toast.makeText(this, "No file selected", Toast.LENGTH_SHORT).show();
         }
     }

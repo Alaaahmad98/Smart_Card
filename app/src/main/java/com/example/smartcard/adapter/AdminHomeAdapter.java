@@ -14,6 +14,7 @@ import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.smartcard.R;
+import com.example.smartcard.activities.CardNumberActivity;
 import com.example.smartcard.activities.CategoryActivity;
 import com.example.smartcard.activities.TypeActivity;
 import com.example.smartcard.activities.admin.AddCategoryActivity;
@@ -81,7 +82,7 @@ public class AdminHomeAdapter extends RecyclerView.Adapter<AdminHomeAdapter.View
                     intent.putExtra("NAME_CARD", name);
                     context.startActivity(intent);
                 } else if (context instanceof TypeActivity) {
-                    intent = new Intent(context, CardInfoActivity.class);
+                    intent = new Intent(context, CardNumberActivity.class);
                     intent.putExtra("NAME_CARD", name);
                     context.startActivity(intent);
                 }

@@ -21,7 +21,9 @@ import android.widget.Toast;
 import com.example.smartcard.R;
 import com.example.smartcard.activities.CategoryActivity;
 import com.example.smartcard.activities.TypeActivity;
-import com.example.smartcard.helper.AddCardHelper;
+
+import com.example.smartcard.helper.AddTypeHelper;
+import com.example.smartcard.utils.Validation;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -38,9 +40,9 @@ public class AddTypeCategoryActivity extends AppCompatActivity implements View.O
 
     private static final int PICK_IMAGE_REQUEST = 1;
     private Button bnChooseFile, bnUpload;
-    private EditText edName;
+    private EditText edName, edPriceCard;
     private ImageView imageViewType;
-    private ProgressBar progressBar;
+    private ProgressBar progressBar, progressBarC;
 
     private Uri mImageUri;
 
@@ -72,9 +74,10 @@ public class AddTypeCategoryActivity extends AppCompatActivity implements View.O
         bnChooseFile = findViewById(R.id.bn_choose_file);
         bnUpload = findViewById(R.id.bn_upload);
         edName = findViewById(R.id.ed_name_type);
+        edPriceCard = findViewById(R.id.ed_price);
         imageViewType = findViewById(R.id.imageView_type);
         progressBar = findViewById(R.id.progress_bar);
-
+        progressBarC = findViewById(R.id.progress_bar_c);
         intent = getIntent();
         nameParent = intent.getStringExtra("NAME_CARD");
         root = intent.getStringExtra("NAME_ROOT");
@@ -124,6 +127,8 @@ public class AddTypeCategoryActivity extends AppCompatActivity implements View.O
 
     private void uploadFile() {
         if (mImageUri != null) {
+            bnUpload.setVisibility(View.INVISIBLE);
+            progressBarC.setVisibility(View.VISIBLE);
             final StorageReference fileReference = storageReference.child(System.currentTimeMillis() +
                     "." + getFileExtension(mImageUri));
 
@@ -137,16 +142,18 @@ public class AddTypeCategoryActivity extends AppCompatActivity implements View.O
                             progressBar.setProgress(0);
                         }
                     }, 500);
+                    bnUpload.setVisibility(View.VISIBLE);
+                    progressBarC.setVisibility(View.INVISIBLE);
                     Toast.makeText(AddTypeCategoryActivity.this, "Upload successful", Toast.LENGTH_SHORT).show();
 
                     fileReference.getDownloadUrl().addOnCompleteListener(new OnCompleteListener<Uri>() {
                         @Override
                         public void onComplete(@NonNull Task<Uri> task) {
                             uri = task.getResult();
-                            AddCardHelper addCardHelper = new AddCardHelper(uri.toString());
+                            AddTypeHelper helper = new AddTypeHelper(uri.toString(), edPriceCard.getText().toString().trim());
 
 
-                            referenceCard.child(root).child(nameParent).child(edName.getText().toString()).setValue(addCardHelper);
+                            referenceCard.child(root).child(nameParent).child(edName.getText().toString()).setValue(helper);
 
 
                             Intent intent = new Intent(AddTypeCategoryActivity.this, TypeActivity.class);
@@ -175,6 +182,10 @@ public class AddTypeCategoryActivity extends AppCompatActivity implements View.O
         } else {
             Toast.makeText(this, "No file selected", Toast.LENGTH_SHORT).show();
         }
+    }
+
+    public boolean validPriceCard() {
+        return Validation.validReq(this, edPriceCard);
     }
 
     @Override

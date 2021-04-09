@@ -83,7 +83,14 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
 
-
+    <ProgressBar
+        android:id="@+id/progress_bar_c"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toBottomOf="@+id/bn_upload"
+        app:layout_constraintEnd_toEndOf="@+id/bn_upload"
+        app:layout_constraintStart_toStartOf="@+id/bn_upload"
+        app:layout_constraintTop_toTopOf="@+id/bn_upload" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

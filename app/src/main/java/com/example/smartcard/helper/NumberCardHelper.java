@@ -1,12 +1,12 @@
 package com.example.smartcard.helper;
 
-public class CardInfHelper {
+
+public class NumberCardHelper {
 
     private String number;
 
-    public CardInfHelper(String number) {
+    public NumberCardHelper(String number) {
         this.number = number;
-
     }
 
     public String getNumber() {
@@ -17,4 +17,3 @@ public class CardInfHelper {
         this.number = number;
     }
 }
-
