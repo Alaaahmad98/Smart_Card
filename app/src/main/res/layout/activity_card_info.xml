@@ -17,7 +17,6 @@
         android:elevation="3dp"
         android:hint="Number Card"
         android:inputType="number"
-        android:maxLength="14"
         android:padding="8dp"
         android:textDirection="locale"
         app:layout_constraintEnd_toEndOf="parent"

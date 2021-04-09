@@ -18,6 +18,7 @@ import com.example.smartcard.activities.CategoryActivity;
 import com.example.smartcard.activities.TypeActivity;
 import com.example.smartcard.activities.admin.AddCategoryActivity;
 import com.example.smartcard.activities.admin.AdminHomeActivity;
+import com.example.smartcard.activities.admin.CardInfoActivity;
 import com.example.smartcard.helper.AdminHomeHelper;
 import com.squareup.picasso.Picasso;
 
@@ -68,13 +69,19 @@ public class AdminHomeAdapter extends RecyclerView.Adapter<AdminHomeAdapter.View
                     SharedPreferences.Editor editor = preferences.edit();
                     editor.putString("ROOT", name);
                     editor.commit();
-
                     intent = new Intent(context, CategoryActivity.class);
                     intent.putExtra("NAME_CARD", name);
                     context.startActivity(intent);
-
                 } else if (context instanceof CategoryActivity) {
+                    SharedPreferences preferences = context.getSharedPreferences("NAME_ROOT", Context.MODE_PRIVATE);
+                    SharedPreferences.Editor editor = preferences.edit();
+                    editor.putString("PARENT", name);
+                    editor.commit();
                     intent = new Intent(context, TypeActivity.class);
+                    intent.putExtra("NAME_CARD", name);
+                    context.startActivity(intent);
+                } else if (context instanceof TypeActivity) {
+                    intent = new Intent(context, CardInfoActivity.class);
                     intent.putExtra("NAME_CARD", name);
                     context.startActivity(intent);
                 }

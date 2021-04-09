@@ -11,14 +11,15 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".activities.TypeActivity"
-            android:parentActivityName=".activities.CategoryActivity"/>
+        <activity
+            android:name=".activities.TypeActivity"
+            android:parentActivityName=".activities.CategoryActivity" />
         <activity
             android:name=".activities.CategoryActivity"
             android:parentActivityName=".activities.admin.AdminHomeActivity" />
         <activity
             android:name=".activities.admin.CardInfoActivity"
-            android:parentActivityName=".activities.admin.AddTypeCategoryActivity" />
+            android:parentActivityName=".activities.TypeActivity" />
         <activity
             android:name=".activities.admin.AddTypeCategoryActivity"
             android:parentActivityName=".activities.TypeActivity" />
