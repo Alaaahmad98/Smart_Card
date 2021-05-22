@@ -94,17 +94,6 @@
         app:layout_constraintTop_toBottomOf="@+id/ed_password" />
 
 
-    <TextView
-        android:id="@+id/tv_sign_up"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
-        android:text="Sign up"
-        android:textColor="@color/colorBlack"
-        android:textSize="19sp"
-        app:layout_constraintEnd_toEndOf="@+id/button_sign_in"
-        app:layout_constraintStart_toStartOf="@+id/button_sign_in"
-        app:layout_constraintTop_toBottomOf="@+id/progressBar" />
 
     <ProgressBar
         android:id="@+id/progressBar"

@@ -32,11 +32,9 @@
         <activity
             android:name=".activities.admin.AddCardActivity"
             android:parentActivityName=".activities.admin.AdminHomeActivity" />
-        <activity android:name=".activities.user.UserHomeActivity" />
         <activity android:name=".activities.admin.AdminHomeActivity" />
         <activity android:name=".SplashActivity" />
-        <activity android:name=".activities.LoginActivity" />
-        <activity android:name=".activities.RegisterActivity">
+        <activity android:name=".activities.LoginActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

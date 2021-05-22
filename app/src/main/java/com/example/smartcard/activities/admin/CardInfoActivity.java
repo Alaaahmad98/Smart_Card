@@ -23,7 +23,6 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
 
-
 public class CardInfoActivity extends AppCompatActivity implements View.OnClickListener {
 
     private EditText edNumberCard;

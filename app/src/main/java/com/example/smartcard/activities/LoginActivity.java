@@ -15,7 +15,6 @@ import android.widget.TextView;
 
 import com.example.smartcard.R;
 import com.example.smartcard.activities.admin.AdminHomeActivity;
-import com.example.smartcard.activities.user.UserHomeActivity;
 import com.example.smartcard.utils.Dialogs;
 import com.example.smartcard.utils.Validation;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -26,7 +25,6 @@ import com.google.firebase.auth.FirebaseAuth;
 public class LoginActivity extends AppCompatActivity implements View.OnClickListener {
 
     private EditText edEmail, edPassword;
-    private TextView tvSignUp;
     private Button bnSignIn;
     private ProgressBar progressBar;
     private Intent intent;
@@ -50,14 +48,12 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         edPassword = findViewById(R.id.ed_password);
         bnSignIn = findViewById(R.id.button_sign_in);
         progressBar = findViewById(R.id.progressBar);
-        tvSignUp = findViewById(R.id.tv_sign_up);
 
         firebaseAuth = FirebaseAuth.getInstance();
     }
 
     //click listener
     private void clickView() {
-        tvSignUp.setOnClickListener(this);
         bnSignIn.setOnClickListener(this);
     }
 
@@ -72,9 +68,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                     signIn();
                 }
                 break;
-            case R.id.tv_sign_up:
-                startActivity(new Intent(this, RegisterActivity.class));
-                break;
+
         }
     }
 
@@ -110,13 +104,15 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
     // move to home activity.
     private void updateUI(String email) {
-        if (email.equals("admin@mail.com")) {
-            intent = new Intent(this, AdminHomeActivity.class);
-        } else {
-            intent = new Intent(this, UserHomeActivity.class);
+        switch (email) {
+            case "admin@mail.com":
+//            case "other:
+//            case "other":
+                intent = new Intent(this, AdminHomeActivity.class);
+                startActivity(intent);
+                finish();
         }
-        startActivity(intent);
-        finish();
+
     }
 
     //validation
